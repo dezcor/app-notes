@@ -8,6 +8,7 @@ var notes = new Schema({
         type: Boolean,
         default: true
      },
+     "is_admin":{type: Boolean,default: false},
     "create_date": { type: Date, default: Date.now }
 })
 

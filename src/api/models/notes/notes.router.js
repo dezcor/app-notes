@@ -6,6 +6,6 @@ exports.router = (app) => {
     app.get('/note',auth.ensureAuthenticated,notes.findAll);
     app.get('/note/:id',auth.ensureAuthenticated,notes.findOne);
     app.put('/note/:id',auth.ensureAuthenticated,notes.update);
-    app.delete('note/:id',auth.ensureAuthenticated,notes.delete);
+    app.delete('/note/:id',auth.ensureAuthenticated,notes.delete);
 
 }

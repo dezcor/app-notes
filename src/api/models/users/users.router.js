@@ -5,6 +5,6 @@ exports.router = (app) => {
     app.post('/user',user.create);
     app.get('/user',auth.ensureAuthenticated,user.findAll);
     app.get('/user/:id',auth.ensureAuthenticated,user.findOne);
-    app.delete('user/:id',auth.ensureAuthenticated,user.delete);
+    app.delete('/user/:id',auth.ensureAuthenticated,user.delete);
 
 }

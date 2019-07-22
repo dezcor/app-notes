@@ -4,17 +4,20 @@ var ObjectId = require("mongoose").Types.ObjectId
 
 exports.create = async (req,res) =>{
     user_id = req.body.user_id;
-
+    note = req.body.note;
+    title = req.body.title;
     User.findOne({_id:user_id}).exec(async (err,user) =>{
         if(err){
             return res.status(500).json({message : err});
         }
-        if( !user)
+        if( !user || !note)
             res.status(400).json({message:"User Detail fetched faild"})
         
         note = await Note({
             "user_id" : ObjectId(user_id),
-            "note": req.body.note})
+            "note": note,
+            "title": title
+        })
         await note.save()
         
         res.status(200).json({ message: "Note add to User Successfully", data : note});
@@ -25,12 +28,12 @@ exports.create = async (req,res) =>{
 exports.findAll = async (req,res) =>{
     user_id = req.body.user_id;
 
-    Note.find({user_id:user_id}).populate('user_id').exec((err,notes)=>{
+    Note.find({user_id:user_id}).exec((err,notes)=>{
         if(err){
             return res.status(500).json({message : err});
         }
 
-        res.status(200).json({ message: "Notes Details at User, fetched Successfully", data : notes});
+        res.status(200).json(notes);
     })
     
 }
@@ -43,7 +46,7 @@ exports.findOne = async (req,res) =>{
             return res.status(500).json({message : err});
         }
 
-        res.status(200).json({ message: "Notes Details at User, fetched Successfully", data : notes});
+        res.status(200).json(notes);
     })
     
 };
@@ -51,12 +54,19 @@ exports.findOne = async (req,res) =>{
 exports.update = async (req,res) =>{
     user_id = req.body.user_id;
     note_id = req.params.id;
-    Note.findOneAndUpdate({user_id:user_id,_id:note_id},{note:req.body.note}).exec((err,notes)=>{
+
+    note = req.body.note;
+    title = req.body.title;
+    const data ={
+        title:title,
+        note:note
+    }
+    Note.findOneAndUpdate({user_id:user_id,_id:note_id},data).exec((err,notes)=>{
         if(err){
             return res.status(500).json({message : err});
         }
 
-        res.status(200).json({ message: "Notes Update Details at User, fetched Successfully", data : notes});
+        res.status(200).json(notes);
     })
     
 };
